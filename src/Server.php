@@ -74,8 +74,9 @@ class Server {
 	public function listShares() {
 		$user = escapeshellarg($this->getUser());
 		$command = self::CLIENT . ' -U ' . $user . ' ' . '-gL ' . escapeshellarg($this->getHost());
-		$connection = new RawConnection($command);
-		$connection->write($this->getPassword() . PHP_EOL);
+		$connection = new RawConnection($command, array(
+			'PASSWD' => $this->getPassword()
+		));
 		$output = $connection->readAll();
 
 		$line = $output[0];
