@@ -42,9 +42,9 @@ class Share implements IShare {
 		}
 		$command = Server::CLIENT . ' -U ' . escapeshellarg($this->server->getUser()) .
 			' //' . $this->server->getHost() . '/' . $this->name;
-		$this->connection = new Connection($command);
-		$this->connection->write($this->server->getPassword());
-		$this->connection->readLine(); // discard password prompt
+		$this->connection = new Connection($command, array(
+			'PASSWD' => $this->server->getPassword()
+		));
 		if (!$this->connection->isValid()) {
 			throw new ConnectionError();
 		}
